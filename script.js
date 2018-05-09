@@ -29,9 +29,73 @@ $(document).ready(function(){
       }
       matrix.push(array);
     }
-    console.log(matrix);
-    solve(0, 0);
+
+    if(validateInput()){
+      solve(0, 0);
+    }
+    else{
+      $('#message').html('Invalid input');
+    }
   });
+
+  function validateInput(){
+    for(var i = 0; i < 9; i++){
+      var row = [];
+      for(var j = 0; j < 9; j++){
+        row.push(0);
+      }
+      for(var j = 0; j < 9; j++){
+        if(matrix[i][j].set){
+          row[matrix[i][j].num - 1] += 1;
+        }
+      }
+      for(var j = 0; j < 9; j++){
+        if(row[j] > 1){
+          return false;
+        }
+      }
+    }
+    for(var i = 0; i < 9; i++){
+      var col = [];
+      for(var j = 0; j < 9; j++){
+        col.push(0);
+      }
+      for(var j = 0; j < 9; j++){
+        if(matrix[j][i].set){
+          col[matrix[j][i].num - 1] += 1;
+        }
+      }
+      for(var j = 0; j < 9; j++){
+        if(col[j] > 1){
+          return false;
+        }
+      }
+    }
+
+    for(var i = 0; i < 9; i+=3){
+      for(j = 0; j < 9; j+=3){
+        var mat = [];
+        for(var k = 0; k < 9; k++){
+          mat.push(0);
+        }
+        for(var m = i; m < i + 3; m++){
+          for(var n = j; n < j + 3; n++){
+            if(matrix[m][n].set){
+              mat[matrix[m][n].num - 1] += 1;
+            }
+          }
+        }
+
+        for(var k = 0; k < 9; k++){
+          if(mat[k] > 1){
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
 
   $('#reset').on('click', function(){
     location.reload();
